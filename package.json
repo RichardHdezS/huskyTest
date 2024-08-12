@@ -23,6 +23,6 @@
     "standard": "^17.1.0"
   },
   "lint-staged": {
-    "*.js": "npm run lint:fix"
+    "*.js": ["npm run lint:fix", "git add -A ."]
   }
 }
