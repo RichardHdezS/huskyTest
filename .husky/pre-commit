@@ -1,4 +1,30 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Ejecutar los scripts de lint-staged
 npx lint-staged
+
+# Indicamos una version de cambio
+echo "Seleccione el tipo de versión:"
+echo "1. Parche (patch)"
+echo "2. Menor (minor)"
+echo "3. Mayor (major)"
+read -p "Ingrese el número correspondiente: " version_type </dev/tty
+
+# Validar la entrada del usuario
+if [ "$version_type" == "1" ]; then
+  version="patch"
+elif [ "$version_type" == "2" ]; then
+  version="minor"
+elif [ "$version_type" == "3" ]; then
+  version="major"
+else
+  echo "Entrada no válida. Saliendo."
+  exit 1
+fi
+
+# Incrementar la versión
+npm version $version --no-git-tag-version
+
+# Agregar los cambios al área de preparación (staging)
+git add package.json package-lock.json
